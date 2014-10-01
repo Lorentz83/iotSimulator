@@ -18,12 +18,14 @@
 package iot.utils;
 
 import edu.uci.ics.jung.graph.util.Pair;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
+import org.apache.commons.math3.random.JDKRandomGenerator;
+import org.apache.commons.math3.random.RandomDataGenerator;
 
 /**
  *
@@ -31,17 +33,15 @@ import java.util.Set;
  */
 public class CustomRandom {
 
-    private final Random _rnd;
+    private final JDKRandomGenerator _rnd;
+    private final RandomDataGenerator _rndData;
 
-    public CustomRandom(Random rnd) {
+    public CustomRandom(JDKRandomGenerator rnd) {
         _rnd = rnd;
+        _rndData = new RandomDataGenerator(_rnd);
     }
 
-    public int getServiceNumber() {
-        return _rnd.nextInt(10) + 1; //todo fixme
-    }
-
-    public <T> T randomElement(Set<T> set) {
+    public <T> T randomElement(Collection<T> set) {
         int pos = _rnd.nextInt(set.size());
         Iterator<T> it = set.iterator();
         while (pos-- > 0) {
@@ -75,8 +75,19 @@ public class CustomRandom {
         return new Pair(el1, el2);
     }
 
-    public float getTrustLevel() {
-        return _rnd.nextFloat();//todo
+    public double getTrustLevel() {
+        return _rndData.nextBeta(19, 7) * 2 - 1;
     }
 
+    public int getServiceNumber() { //geometric(.75) ?
+        int res = 1;
+        while (_rnd.nextDouble() < .75) {
+            res++;
+        }
+        return res;
+    }
+
+    int nextInt(int bound) {
+        return _rnd.nextInt(bound);
+    }
 }

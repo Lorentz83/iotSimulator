@@ -17,20 +17,16 @@
  */
 package iot;
 
-import edu.uci.ics.jung.graph.DirectedOrderedSparseMultigraph;
 import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
 import edu.uci.ics.jung.graph.util.Pair;
 import iot.entities.Provider;
-import iot.entities.Service;
 import iot.entities.ServiceFactory;
 import iot.entities.Trust;
 import iot.utils.CustomRandom;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
 import java.util.Set;
+import org.apache.commons.math3.random.JDKRandomGenerator;
 
 /**
  *
@@ -42,44 +38,20 @@ public class Iot {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        DirectedSparseMultigraph<Provider, Trust> graph = createGraph(10, .2, 15, 20, new Random());
+
+        int serviceProvidersNumber = 20;
+        int reputationProvidersNumber = 5;
+        int connectionsNumber = 30;
+        int iterations = 100;
+        int serviceNumber = 10;
+
+        JDKRandomGenerator rnd = new JDKRandomGenerator(serviceNumber);
+        //rnd.setSeed(27592);
+        CustomRandom crnd = new CustomRandom(rnd);
+        ServiceFactory serviceFactory = new ServiceFactory(10);
+        GraphGenerator generator = new GraphGenerator(new CustomRandom(rnd), serviceFactory.getServices());
+        DirectedSparseMultigraph<Provider, Trust> graph = generator.createGraph(serviceProvidersNumber, reputationProvidersNumber, connectionsNumber, iterations);
         toDot(graph, System.out);
-    }
-
-    private static DirectedSparseMultigraph<Provider, Trust> createGraph(int providersNumber, double reputationRatio, int trustRelationsNumber, int servicesNumber, Random random) {
-        DirectedSparseMultigraph<Provider, Trust> graph = new DirectedOrderedSparseMultigraph<>();
-
-        final int reputationProvidersNumber = (int) (providersNumber * reputationRatio);
-        final int serviceProvidersNumber = providersNumber - reputationProvidersNumber;
-
-        ServiceFactory serviceFactory = new ServiceFactory(servicesNumber);
-        List<Provider> providers = new ArrayList<>();
-
-        CustomRandom crnd = new CustomRandom(random);
-
-        for (int i = 0; i < reputationProvidersNumber; i++) {
-            Set<Service> services = crnd.randomSubset(serviceFactory.getServices(), crnd.getServiceNumber());
-            providers.add(new Provider(String.format("RP%02d", i), true, services));
-
-        }
-        for (int i = 0; i < serviceProvidersNumber; i++) {
-            Set<Service> services = crnd.randomSubset(serviceFactory.getServices(), crnd.getServiceNumber());
-            providers.add(new Provider(String.format("SP%02d", i), false, services));
-        }
-
-        for (Provider p : providers) {
-            graph.addVertex(p);
-        }
-
-        for (int i = 0; i < trustRelationsNumber; i++) {
-            Pair<Provider> p = crnd.getPair(providers);
-            float level = crnd.getTrustLevel();
-            Service service = crnd.randomElement(p.getSecond().getServices());
-            Trust trust = new Trust(service, level);
-            graph.addEdge(trust, p);
-        }
-
-        return graph;
     }
 
     private static void toDot(DirectedSparseMultigraph<Provider, Trust> graph, PrintStream out) {

@@ -24,9 +24,9 @@ package iot.entities;
 public class Trust {
 
     public Service _service;
-    public float _level;
+    public double _level;
 
-    public Trust(Service service, float level) {
+    public Trust(Service service, double level) {
         _service = service;
         _level = level;
     }
@@ -35,7 +35,7 @@ public class Trust {
         return _service;
     }
 
-    public float getLevel() {
+    public double getLevel() {
         return _level;
     }
 
