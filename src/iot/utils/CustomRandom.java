@@ -56,7 +56,7 @@ public class CustomRandom {
     }
 
     public <T> Set<T> randomSubset(List<T> list, int howMany) {
-        if (howMany >= list.size()) {
+        if (howMany > list.size()) {
             throw new IllegalArgumentException("Requested " + howMany + " random elements from a list of " + list.size() + " elements");
         }
         Set<T> retVal = new HashSet<>();
@@ -79,12 +79,12 @@ public class CustomRandom {
         return _rndData.nextBeta(19, 7) * 2 - 1;
     }
 
-    public int getServiceNumber() { //geometric(.75) ?
+    public int getServiceNumber(int max) { //geometric(.75) ?
         int res = 1;
         while (_rnd.nextDouble() < .75) {
             res++;
         }
-        return res;
+        return (res > max) ? getServiceNumber(max) : res;
     }
 
     int nextInt(int bound) {

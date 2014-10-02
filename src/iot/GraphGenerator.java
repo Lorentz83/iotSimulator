@@ -46,7 +46,7 @@ public class GraphGenerator {
         DirectedSparseMultigraph<Provider, Object> graph = new DirectedSparseMultigraph<Provider, Object>();
         List<Provider> providers = new ArrayList(providersNumber);
         for (int i = 0; i < providersNumber; i++) {
-            Set<Service> services = _rnd.randomSubset(_serviceList, _rnd.getServiceNumber());
+            Set<Service> services = _rnd.randomSubset(_serviceList, _rnd.getServiceNumber(_serviceList.size()));
             Provider provider = new Provider(String.format("P%02d", i), services);
             _providers.add(provider);
             providers.add(provider);
@@ -73,7 +73,8 @@ public class GraphGenerator {
      */
     private void createPowerLawGraph(final DirectedSparseMultigraph<Provider, Object> graph, int iterations) {
         ProportionalRandomPickup<Provider> propRnd = new ProportionalRandomPickup<>(_rnd, _providers, p -> {
-            return graph.getPredecessorCount(p);
+            Collection<Provider> pred = graph.getPredecessors(p);
+            return pred == null ? 0 : pred.size();
         });
 
         while (iterations-- > 0) {
@@ -83,7 +84,7 @@ public class GraphGenerator {
             do {
                 v = _rnd.randomElement(_providers);
                 inEdges = graph.getInEdges(v);
-            } while (inEdges.isEmpty());
+            } while (inEdges == null || inEdges.isEmpty()); // getInEdges sometimes returns null instead of an empty set;
 
             //2. Pick an edge (u, v) ∈ G at random.
             Object edge = _rnd.randomElement(inEdges);

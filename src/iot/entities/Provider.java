@@ -40,8 +40,7 @@ public class Provider {
         return _name;
     }
 
-    @Override
-    public String toString() {
+    public String getFullName() {
         return String.format("%s%s", _name, _onlyReputation ? "R" : "S");
     }
 
