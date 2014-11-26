@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Random;
 
 /**
+ * Creates a list of services. The services are logically organized in a binary
+ * tree that is used to define the similarity function.
  *
  * @author Lorenzo Bossi
  */

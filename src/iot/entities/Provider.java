@@ -56,8 +56,23 @@ public class Provider {
         return _services;
     }
 
-    public int provide(Service service) {
-        int sim = 0;
+    @Override
+    public String toString() {
+        return _name;
+    }
+
+    /**
+     * Check if this provider provides the required service. Returns the maximum
+     * similarity of the provided services from this provider compared to the
+     * required service.
+     *
+     * @param service the required service.
+     * @return 0 if this provider does not provide anything similar to the
+     * required service, 1 if provides exactly the required service, a fraction
+     * if provides some similar service.
+     */
+    public double provide(Service service) {
+        double sim = 0;
         for (Service s : _services) {
             sim = Math.max(s.similarity(service), sim);
         }
