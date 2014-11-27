@@ -108,7 +108,11 @@ public class GraphUtilities {
     public static boolean isGood(DirectedSparseMultigraph<Provider, Trust> graph) {
         Forest<Provider, Trust> forest = new DelegateForest<>();
         int trees = new MinimumSpanningForest<>(graph, forest, graph.getVertices().iterator().next()).getForest().getTrees().size();
-        return trees == 1;
+        if (trees != 1) {
+            System.err.println("Discarding graph which has " + trees + " spanning trees");
+            return false;
+        }
+        return true;
     }
 
 }

@@ -46,7 +46,7 @@ public class Iot {
         }
         int serviceProvidersNumber = 20;
         int reputationProvidersNumber = 5;
-        int connectionsNumber = 30;
+        int connectionsNumber = 200;
         int iterations = 100;
         int serviceNumber = 10;
 

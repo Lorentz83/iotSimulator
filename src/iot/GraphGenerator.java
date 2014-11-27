@@ -138,7 +138,11 @@ public class GraphGenerator {
             graph.addVertex(p);
         }
         for (Provider to : _providers) {
-            for (Object edge : skelGraph.getInEdges(to)) {
+            Collection<Object> edges = skelGraph.getInEdges(to);
+            if (edges == null) {
+                continue;
+            }
+            for (Object edge : edges) {
                 Provider from = skelGraph.getSource(edge);
                 Service service = _rnd.randomElement(to.getServices());
                 double trust = _rnd.getTrustLevel();
