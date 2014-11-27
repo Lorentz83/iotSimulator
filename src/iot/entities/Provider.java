@@ -17,20 +17,38 @@
  */
 package iot.entities;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
+ * Representation of a Provider. Two providers are equals if their references
+ * are equals.
  *
  * @author Lorenzo Bossi
  */
-public class Provider {
+public class Provider implements Serializable {
 
     private final String _name;
     private final Set<Service> _services;
 
     private boolean _onlyReputation;
 
+    /**
+     * Initializes the class.
+     *
+     * @param name the name of the provider.
+     * @param services the set of services.
+     * @throws NullPointerException if the name is null
+     * @throws IllegalArgumentException if the services set contains less than 1
+     * service.
+     */
     public Provider(String name, Set<Service> services) {
+        if (name == null) {
+            throw new NullPointerException("Missing provider name");
+        }
+        if (services.size() < 1) {
+            throw new IllegalArgumentException("At least 1 service must be provided");
+        }
         _name = name;
         _onlyReputation = false;
         _services = services;
@@ -40,6 +58,11 @@ public class Provider {
         return _name;
     }
 
+    /**
+     * Append to the name R if provides only reputation S if provides both.
+     *
+     * @return a decorated name.
+     */
     public String getFullName() {
         return String.format("%s%s", _name, _onlyReputation ? "R" : "S");
     }
@@ -62,9 +85,9 @@ public class Provider {
     }
 
     /**
-     * Check if this provider provides the required service. Returns the maximum
-     * similarity of the provided services from this provider compared to the
-     * required service.
+     * Checks if this provider provides the required service. Returns the
+     * maximum similarity of the provided services from this provider compared
+     * to the required service.
      *
      * @param service the required service.
      * @return 0 if this provider does not provide anything similar to the

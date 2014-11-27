@@ -67,6 +67,11 @@ public class Counter<T> {
         return (c == null) ? 0 : c;
     }
 
+    /**
+     * Pretty formats the collected values in an ascii table.
+     *
+     * @return a formatted string with the values in a table.
+     */
     public String toTable() {
         StringBuilder sb = new StringBuilder();
 

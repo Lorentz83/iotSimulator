@@ -18,7 +18,7 @@
 package iot.entities;
 
 /**
- * Represents a service.
+ * Represents a service. Two services are equals if their references are equals.
  *
  * @author Lorenzo Bossi
  */

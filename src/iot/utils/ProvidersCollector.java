@@ -47,12 +47,16 @@ public class ProvidersCollector implements Iterable<WorkingUnit> {
      * @param minimumSimilarity the minimum similarity required to select a
      * provider for a service.
      * @throws IllegalArgumentException if the similarity is not in the range
-     * (0,1].
+     * (0,1] or the working plan contains less than two services.
      */
     public ProvidersCollector(Set<Service> workingPlan, double minimumSimilarity) throws IllegalArgumentException {
         if (minimumSimilarity <= 0 || minimumSimilarity > 1) {
             throw new IllegalArgumentException("minimumSimilarity must be in (0,1]");
         }
+        if (workingPlan.size() < 2) {
+            throw new IllegalArgumentException("The working plan have to contain at least two services");
+        }
+
         _workingPlan = workingPlan;
         _providersPerService = new HashMap<>();
         for (Service service : workingPlan) {
@@ -62,9 +66,9 @@ public class ProvidersCollector implements Iterable<WorkingUnit> {
     }
 
     /**
-     * Collects the available providers. Only the service providers are
-     * collected, providers which provide only reputation are silently
-     * discarded.
+     * Collects the provider if it is useful for the current set up (working
+     * unit and minimum similarity). Only the service providers are collected,
+     * providers which provide only reputation are silently discarded.
      *
      * @param provider the provider.
      */
