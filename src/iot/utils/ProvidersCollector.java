@@ -62,11 +62,16 @@ public class ProvidersCollector implements Iterable<WorkingUnit> {
     }
 
     /**
-     * Collects the available providers.
+     * Collects the available providers. Only the service providers are
+     * collected, providers which provide only reputation are silently
+     * discarded.
      *
      * @param provider the provider.
      */
     public void addProvider(Provider provider) {
+        if (provider.isOnlyReputation()) {
+            return;
+        }
         for (Service required : _workingPlan) {
             List<Provider> listOfProviders = _providersPerService.get(required);
             if (provider.provide(required) >= _minimumSimilarity) {
@@ -124,7 +129,7 @@ class WorkingUnitIterator implements Iterator<WorkingUnit> {
             Service service = _workingPlan.get(i);
             int pos = _counter.get(service);
             List<Provider> providersList = _providersPerService.get(service);
-            wu.add(service, providersList.get(pos));
+            wu.add(providersList.get(pos), service);
 
             if (_serviceToInc == i) {
                 if (pos < providersList.size() - 1) {

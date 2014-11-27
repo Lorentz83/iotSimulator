@@ -23,6 +23,7 @@ import iot.entities.Provider;
 import iot.entities.Service;
 import iot.entities.Trust;
 import iot.entities.WorkingUnit;
+import iot.utils.Average;
 import iot.utils.Pair;
 import iot.utils.ProvidersCollector;
 import java.util.Collection;
@@ -84,30 +85,80 @@ public class TransitiveTrust {
      * @param customer the node that starts the search.
      * @param workingPlan the required services.
      * @param depth how far search.
+     * @param minSimilarity the minimum similarity required to select a service.
      * @return a pair with the best working unit found and the overall unit
-     * reputation.
+     * reputation or null if no working unit is be found.
+     * @throws IllegalArgumentException if depth is less or equal than 1 or
+     * minSimilarity is not in (0,1].
      */
     public Pair<WorkingUnit, Double> getWorkingUnit(Provider customer, Set<Service> workingPlan, int depth, double minSimilarity) {
+        if (depth <= 1) {
+            throw new IllegalArgumentException("depth must be greather than 1");
+        }
+        if (minSimilarity > 1 || minSimilarity <= 0) {
+            throw new IllegalArgumentException("minSimilarity must be in (0,1]");
+        }
         ProvidersCollector collector = new ProvidersCollector(workingPlan, minSimilarity);
         Set<Provider> visited = new HashSet<>();
-
         collectProviders(customer, collector, visited, depth);
-        throw new UnsupportedOperationException("not yet implemented");
-        // todo the collector must check if is a service provider
+
+        WorkingUnit bestWorkingUnit = null;
+        double bestReputation = Double.MIN_VALUE;
+        for (WorkingUnit wu : collector) {
+            double reputation = calculateOverallReputation(wu);
+            if (reputation > bestReputation) {
+                bestReputation = reputation;
+                bestWorkingUnit = wu;
+            }
+        }
+
+        if (bestWorkingUnit == null) {
+            return null;
+        }
+        return new Pair<>(bestWorkingUnit, bestReputation);
     }
 
     private void collectProviders(Provider start, ProvidersCollector collector, Set<Provider> visited, int depth) {
-        if (depth == 0) {
-            visited.add(start);
-            collector.addProvider(start);
+        if (!visited.add(start)) {
             return;
         }
-        Collection<Provider> succ = _graph.getSuccessors(start);
-        for (Provider p : succ) {
-
-            collectProviders(p, collector, visited, depth - 1);
+        collector.addProvider(start);
+        if (depth == 0) {
+            return;
         }
-        throw new UnsupportedOperationException("not yet implemented");
+        Collection<Provider> successors = _graph.getSuccessors(start);
+        for (Provider next : successors) {
+            collectProviders(next, collector, visited, depth - 1);
+        }
+    }
+
+    /**
+     * Calculates the overall reputation for the working unit.
+     *
+     * @param workingUnit the working unit
+     * @return the overall reputation, as the average of the reputation of all
+     * the member.
+     * @throws IllegalArgumentException if the working unit contains less than
+     * two service provider.
+     */
+    public double calculateOverallReputation(WorkingUnit workingUnit) {
+        Average avg = new Average();
+        Set<Provider> providers = workingUnit.getProviders();
+        if (providers.size() <= 1) {
+            throw new IllegalArgumentException("The working unit contains less than two providers");
+        }
+        for (Provider source : providers) {
+            for (Map.Entry<Provider, List<Service>> sp : workingUnit.getServiceListPerProvider()) {
+                Provider dest = sp.getKey();
+                if (!source.equals(dest)) {
+                    for (Service service : sp.getValue()) {
+                        double rep = getReputation(source, dest, service);
+                        avg.add(rep);
+                    }
+                }
+            }
+        }
+        return avg.getAvg();
     }
 
 }
