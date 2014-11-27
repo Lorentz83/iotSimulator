@@ -72,7 +72,7 @@ public class CustomRandom {
         do {
             el2 = randomElement(list);
         } while (el1 == el2);
-        return new Pair(el1, el2);
+        return new Pair<>(el1, el2);
     }
 
     public double getTrustLevel() {

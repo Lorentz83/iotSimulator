@@ -107,11 +107,8 @@ public class GraphUtilities {
      */
     public static boolean isGood(DirectedSparseMultigraph<Provider, Trust> graph) {
         Forest<Provider, Trust> forest = new DelegateForest<>();
-        int trees = new MinimumSpanningForest(graph, forest, graph.getVertices().iterator().next()).getForest().getTrees().size();
-        if (trees > 1) {
-            return false;
-        }
-        return true;
+        int trees = new MinimumSpanningForest<>(graph, forest, graph.getVertices().iterator().next()).getForest().getTrees().size();
+        return trees == 1;
     }
 
 }

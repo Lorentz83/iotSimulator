@@ -33,7 +33,7 @@ import java.util.Set;
 public class WorkingUnit {
 
     private final Map<Service, Provider> _components = new HashMap<>();
-    private final MapList<Provider, Service> _providers = new MapList();
+    private final MapList<Provider, Service> _providers = new MapList<>();
 
     /**
      * Add the provider to the working unit.

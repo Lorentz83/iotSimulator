@@ -37,7 +37,7 @@ public class ProportionalRandomPickup<T> {
         int cumulative = 0;
         for (T el : elements) {
             cumulative += proportion.apply(el);
-            _elements.add(new Pair(el, cumulative));
+            _elements.add(new Pair<>(el, cumulative));
         }
         _cumulative = cumulative;
     }

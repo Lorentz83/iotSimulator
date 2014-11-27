@@ -99,7 +99,7 @@ class WorkingUnitIterator implements Iterator<WorkingUnit> {
     WorkingUnitIterator(Map<Service, List<Provider>> providersPerService) {
         _max = new HashMap<>();
         _providersPerService = providersPerService;
-        _workingPlan = new ArrayList(providersPerService.keySet()); //the set has no order, we must rely on this iterator
+        _workingPlan = new ArrayList<>(providersPerService.keySet()); //the set has no order, we must rely on this iterator
         _empty = false;
         _counter = new Counter<>();
         for (Map.Entry<Service, List<Provider>> pair : providersPerService.entrySet()) {

@@ -74,7 +74,7 @@ public class MapList<K, V> implements Iterable<Map.Entry<K, List<V>>> {
      */
     @Override
     public Iterator<Map.Entry<K, List<V>>> iterator() {
-        return new UnmodifiableIterator(_container.entrySet().iterator());
+        return new UnmodifiableIterator<>(_container.entrySet().iterator());
     }
 
     /**
@@ -126,7 +126,7 @@ class UnmodifiableIterator<K, V> implements Iterator<Map.Entry<K, List<V>>> {
 
         @Override
         public List<V> setValue(List<V> value) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            throw new UnsupportedOperationException("Not allowed");
         }
 
     }
