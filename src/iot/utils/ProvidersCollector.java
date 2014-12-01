@@ -147,4 +147,9 @@ class WorkingUnitIterator implements Iterator<WorkingUnit> {
         _empty = _serviceToInc == _workingPlan.size();
         return wu;
     }
+
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException("Not supported");
+    }
 }

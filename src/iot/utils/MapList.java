@@ -106,6 +106,11 @@ class UnmodifiableIterator<K, V> implements Iterator<Map.Entry<K, List<V>>> {
         return new UnmodifiableEntry(_realIterator.next());
     }
 
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException("Not supported.");
+    }
+
     private class UnmodifiableEntry implements Map.Entry<K, List<V>> {
 
         private final Map.Entry<K, List<V>> _realEntry;
