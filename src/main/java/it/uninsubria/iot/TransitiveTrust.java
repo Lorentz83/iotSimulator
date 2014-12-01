@@ -15,17 +15,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package iot;
+package it.uninsubria.iot;
 
 import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath;
 import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
-import iot.entities.Provider;
-import iot.entities.Service;
-import iot.entities.Trust;
-import iot.entities.WorkingUnit;
-import iot.utils.Average;
-import iot.utils.Pair;
-import iot.utils.ProvidersCollector;
+import it.uninsubria.iot.entities.Provider;
+import it.uninsubria.iot.entities.Service;
+import it.uninsubria.iot.entities.Trust;
+import it.uninsubria.iot.entities.WorkingUnit;
+import it.uninsubria.iot.utils.Average;
+import it.uninsubria.iot.utils.Pair;
+import it.uninsubria.iot.utils.ProvidersCollector;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;

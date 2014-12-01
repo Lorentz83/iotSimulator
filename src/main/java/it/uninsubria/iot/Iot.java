@@ -15,14 +15,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package iot;
+package it.uninsubria.iot;
 
 import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
-import iot.entities.Provider;
-import iot.entities.Service;
-import iot.entities.ServiceFactory;
-import iot.entities.Trust;
-import iot.utils.CustomRandom;
+import it.uninsubria.iot.entities.Provider;
+import it.uninsubria.iot.entities.Service;
+import it.uninsubria.iot.entities.ServiceFactory;
+import it.uninsubria.iot.entities.Trust;
+import it.uninsubria.iot.utils.CustomRandom;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;

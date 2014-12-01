@@ -15,11 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package iot.utils;
+package it.uninsubria.iot.utils;
 
-import iot.entities.Provider;
-import iot.entities.Service;
-import iot.entities.WorkingUnit;
+import it.uninsubria.iot.entities.Provider;
+import it.uninsubria.iot.entities.Service;
+import it.uninsubria.iot.entities.WorkingUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;

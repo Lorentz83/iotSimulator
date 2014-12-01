@@ -15,9 +15,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package iot.entities;
+package it.uninsubria.iot.entities;
 
-import iot.utils.MapList;
+import it.uninsubria.iot.utils.MapList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
